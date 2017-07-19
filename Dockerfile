@@ -5,6 +5,7 @@ MAINTAINER Binded <info@binded.com>
 RUN apt-get update && apt-get install -y \
   build-essential \
   curl \
+  wget \
   git \
   python3 \
   python3-pip \
