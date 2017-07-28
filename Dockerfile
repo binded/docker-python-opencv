@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
   build-essential \
   curl \
   wget \
+  unzip \
   git \
   python3 \
   python3-pip \
