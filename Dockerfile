@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y \
   python3.5-dev \
   libopenblas-dev \
   liblapacke-dev \
-  swig
+  swig \
+  && rm -rf /var/lib/apt/lists/*
 
 # Make sure we have latest version of pip
 RUN pip3 install --upgrade pip
