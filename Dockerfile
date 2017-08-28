@@ -63,8 +63,8 @@ RUN git clone --depth 1 https://github.com/facebookresearch/faiss.git -b "${FAIS
 ENV BLASLDFLAGS="/usr/lib/libopenblas.so.0"
 RUN cd faiss && \
   cp example_makefiles/makefile.inc.Linux makefile.inc && \
-  echo 'PYTHONCFLAGS="-I/usr/include/python3.5m/ -I/usr/local/lib/python3.5/dist-packages/numpy/core/include" \
-    >> makefile.inc' && \
+  echo 'PYTHONCFLAGS=-I/usr/include/python3.5m/ -I/usr/local/lib/python3.5/dist-packages/numpy/core/include' \
+    >> makefile.inc && \
   make -j $(nproc) && \
   make py && \
   cp *py /usr/local/lib/python3.5/dist-packages/ && \
