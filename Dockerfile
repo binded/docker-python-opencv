@@ -58,16 +58,13 @@ RUN cd opencv && \
 
 # Install Facebook Faiss library
 WORKDIR /opt
-# until this is merged: https://github.com/facebookresearch/faiss/pull/146
-#ENV FAISS_BRANCH=master
-#RUN git clone https://github.com/facebookresearch/faiss.git && \
-#  git checkout "${FAISS_BRANCH}"
-ENV FAISS_BRANCH=python-cflags
-RUN git clone --depth 1 https://github.com/olalonde/faiss.git -b "${FAISS_BRANCH}"
+ENV FAISS_BRANCH="master"
+RUN git clone --depth 1 https://github.com/facebookresearch/faiss.git -b "${FAISS_BRANCH}"
 ENV BLASLDFLAGS="/usr/lib/libopenblas.so.0"
-ENV PYTHONCFLAGS="-I/usr/include/python3.5m/ -I/usr/local/lib/python3.5/dist-packages/numpy/core/include"
 RUN cd faiss && \
   cp example_makefiles/makefile.inc.Linux makefile.inc && \
+  echo 'PYTHONCFLAGS="-I/usr/include/python3.5m/ -I/usr/local/lib/python3.5/dist-packages/numpy/core/include" \
+    >> makefile.inc' && \
   make -j $(nproc) && \
   make py && \
   cp *py /usr/local/lib/python3.5/dist-packages/ && \
