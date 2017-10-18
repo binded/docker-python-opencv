@@ -58,8 +58,9 @@ RUN cd opencv && \
 
 # Install Facebook Faiss library
 WORKDIR /opt
-ENV FAISS_BRANCH="master"
-RUN git clone --depth 1 https://github.com/facebookresearch/faiss.git -b "${FAISS_BRANCH}"
+ENV FAISS_COMMIT="6b3b743986ba79633332dde82000348fc1b0af6f"
+RUN git clone https://github.com/facebookresearch/faiss.git
+RUN cd faiss && git checkout "${FAISS_COMMIT}"
 ENV BLASLDFLAGS="/usr/lib/libopenblas.so.0"
 RUN cd faiss && \
   cp example_makefiles/makefile.inc.Linux makefile.inc && \
