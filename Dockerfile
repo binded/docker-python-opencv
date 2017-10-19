@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.10
 MAINTAINER Binded <info@binded.com>
 
 # Update packages and install basics
@@ -8,21 +8,23 @@ RUN apt-get update && apt-get install -y \
   wget \
   unzip \
   git \
-  python3 \
-  python3-pip \
+  python3.6 \
   cmake \
   pkg-config \
   libjpeg8-dev \
   libtiff5-dev \
   libjasper-dev \
-  libpng12-dev \
+  libpng-dev \
   libatlas-base-dev \
   gfortran \
-  python3.5-dev \
+  python3.6-dev \
   libopenblas-dev \
   liblapacke-dev \
   swig \
   && rm -rf /var/lib/apt/lists/*
+
+RUN ln -s /usr/bin/python3.6 /usr/local/bin/python3
+RUN cd /tmp && wget https://bootstrap.pypa.io/get-pip.py && python3.6 get-pip.py
 
 # Make sure we have latest version of pip
 RUN pip3 install --upgrade pip
@@ -53,8 +55,8 @@ RUN cd opencv && \
     make install && \
     ldconfig
 #RUN mv \
-#  /usr/local/lib/python3.5/dist-packages/cv2.cpython-35m-x86_64-linux-gnu.so \
-#  /usr/local/lib/python3.5/dist-packages/cv2.so
+#  /usr/local/lib/python3.6/dist-packages/cv2.cpython-35m-x86_64-linux-gnu.so \
+#  /usr/local/lib/python3.6/dist-packages/cv2.so
 
 # Install Facebook Faiss library
 WORKDIR /opt
@@ -64,9 +66,9 @@ RUN cd faiss && git checkout "${FAISS_COMMIT}"
 ENV BLASLDFLAGS="/usr/lib/libopenblas.so.0"
 RUN cd faiss && \
   cp example_makefiles/makefile.inc.Linux makefile.inc && \
-  echo 'PYTHONCFLAGS=-I/usr/include/python3.5m/ -I/usr/local/lib/python3.5/dist-packages/numpy/core/include' \
+  echo 'PYTHONCFLAGS=-I/usr/include/python3.6m/ -I/usr/local/lib/python3.6/dist-packages/numpy/core/include' \
     >> makefile.inc && \
   make -j $(nproc) && \
   make py && \
-  cp *py /usr/local/lib/python3.5/dist-packages/ && \
-  cp _swigfaiss.so /usr/local/lib/python3.5/dist-packages/
+  cp *py /usr/local/lib/python3.6/dist-packages/ && \
+  cp _swigfaiss.so /usr/local/lib/python3.6/dist-packages/
